@@ -12,7 +12,13 @@ authors = [
     { name = "Akshaya M", email = "akshaya.movvar@coreason.ai" },
 ]
 dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "dlt>=1.23.0",
     "loguru>=0.7.2",
+    "polars>=1.39.0",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.13.1",
+    "requests>=2.32.5",
 ]
 license = { file = "LICENSE" }
 classifiers = [
@@ -22,22 +28,23 @@ classifiers = [
 
 [dependency-groups]
 dev = [
-    "pytest>=9.0.2",
-    "ruff>=0.14.14",
-    "pre-commit>=4.5.1",
-    "pytest-cov>=7.0.0",
-    "zensical",
+    "deepdiff",
+    "deptry",
+    "hypothesis",
+    "mkdocstrings-python",
     "mypy>=1.19.1",
+    "pre-commit>=4.5.1",
+    "pytest>=9.0.2",
     "pytest-asyncio",
     "pytest-benchmark",
-    "deptry",
-    "deepdiff",
-    "hypothesis",
+    "pytest-cov>=7.0.0",
+    "pytest-xdist>=3.6.1",
+    "ruff>=0.14.14",
     "syrupy",
-    "mkdocstrings-python",
     "types-pyyaml>=6.0.12.20250915",
+    "types-requests>=2.32.4.20260107",
     "tzdata>=2025.3",
-    "pytest-xdist>=3.6.1"
+    "zensical",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -73,3 +80,6 @@ asyncio_mode = "auto"
 
 [tool.coverage.run]
 omit = ["tests/*"]
+
+[tool.deptry]
+ignore = ["DEP002"]
