@@ -14,6 +14,7 @@ from unittest.mock import patch
 from coreason_etl_dgidb.config import SystemEnvironmentManifest
 
 
+@patch.dict(os.environ, {}, clear=True)
 def test_system_environment_manifest_defaults() -> None:
     """
     AGENT INSTRUCTION: Ensure that the default values are instantiated correctly
