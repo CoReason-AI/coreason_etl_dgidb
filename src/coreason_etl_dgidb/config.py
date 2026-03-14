@@ -8,8 +8,12 @@
 #
 # Source Code: https://github.com/CoReason-AI/coreason_etl_dgidb
 
+import uuid
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+NAMESPACE_DGIDB = uuid.UUID("f47ac10b-58cc-4372-a567-0e02b2c3d479")
 
 
 class SystemEnvironmentManifest(BaseSettings):
@@ -31,6 +35,11 @@ class SystemEnvironmentManifest(BaseSettings):
         default="https://www.dgidb.org/downloads",
         description="The base URL from which DGIdb bulk files will be discovered and downloaded.",
     )
+    pghost: str = Field(default="localhost", description="PostgreSQL database host.")
+    pgport: int = Field(default=5432, description="PostgreSQL database port.")
+    pguser: str = Field(default="postgres", description="PostgreSQL database user.")
+    pgpassword: str = Field(default="postgres", description="PostgreSQL database password.")
+    pgdatabase: str = Field(default="postgres", description="PostgreSQL database name.")
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 

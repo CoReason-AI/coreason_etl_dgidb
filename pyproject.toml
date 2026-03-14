@@ -13,6 +13,8 @@ authors = [
 ]
 dependencies = [
     "beautifulsoup4>=4.14.3",
+    "dbt-core>=1.11.7",
+    "dbt-postgres>=1.10.0",
     "dlt>=1.23.0",
     "loguru>=0.7.2",
     "polars>=1.39.0",
