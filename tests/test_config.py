@@ -14,6 +14,7 @@ from unittest.mock import patch
 from coreason_etl_dgidb.config import SystemEnvironmentManifest
 
 
+@patch.dict(os.environ, {}, clear=True)
 def test_system_environment_manifest_defaults() -> None:
     """
     AGENT INSTRUCTION: Ensure that the default values are instantiated correctly
@@ -24,6 +25,11 @@ def test_system_environment_manifest_defaults() -> None:
     assert manifest.debug is False
     assert manifest.log_level == "INFO"
     assert manifest.dgidb_base_url == "https://www.dgidb.org/downloads"
+    assert manifest.pghost == "localhost"
+    assert manifest.pgport == 5432
+    assert manifest.pguser == "postgres"
+    assert manifest.pgpassword == "postgres"
+    assert manifest.pgdatabase == "postgres"
 
 
 @patch.dict(
@@ -49,3 +55,26 @@ def test_system_environment_manifest_debug_override_false() -> None:
     """
     manifest = SystemEnvironmentManifest()
     assert manifest.debug is False
+
+
+@patch.dict(
+    os.environ,
+    {
+        "PGHOST": "test_host",
+        "PGPORT": "5433",
+        "PGUSER": "test_user",
+        "PGPASSWORD": "test_password",
+        "PGDATABASE": "test_db",
+    },
+)
+def test_system_environment_manifest_postgres_overrides() -> None:
+    """
+    AGENT INSTRUCTION: Ensure that environment variables correctly override the
+    default configuration values for Postgres.
+    """
+    manifest = SystemEnvironmentManifest()
+    assert manifest.pghost == "test_host"
+    assert manifest.pgport == 5433
+    assert manifest.pguser == "test_user"
+    assert manifest.pgpassword == "test_password"
+    assert manifest.pgdatabase == "test_db"
