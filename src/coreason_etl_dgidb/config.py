@@ -35,6 +35,10 @@ class SystemEnvironmentManifest(BaseSettings):
         default="https://www.dgidb.org/downloads",
         description="The base URL from which DGIdb bulk files will be discovered and downloaded.",
     )
+    dgidb_required_datasets: list[str] = Field(
+        default_factory=lambda: ["interactions.tsv", "genes.tsv", "drugs.tsv", "categories.tsv"],
+        description="The list of required DGIdb TSV datasets that must be discovered and downloaded.",
+    )
     pghost: str = Field(default="localhost", description="PostgreSQL database host.")
     pgport: int = Field(default=5432, description="PostgreSQL database port.")
     pguser: str = Field(default="postgres", description="PostgreSQL database user.")
