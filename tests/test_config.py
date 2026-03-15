@@ -25,6 +25,7 @@ def test_system_environment_manifest_defaults() -> None:
     assert manifest.debug is False
     assert manifest.log_level == "INFO"
     assert manifest.dgidb_base_url == "https://www.dgidb.org/downloads"
+    assert manifest.dgidb_required_datasets == ["interactions.tsv", "genes.tsv", "drugs.tsv", "categories.tsv"]
     assert manifest.pghost == "localhost"
     assert manifest.pgport == 5432
     assert manifest.pguser == "postgres"
@@ -34,7 +35,13 @@ def test_system_environment_manifest_defaults() -> None:
 
 @patch.dict(
     os.environ,
-    {"APP_ENV": "production", "DEBUG": "true", "LOG_LEVEL": "DEBUG", "DGIDB_BASE_URL": "https://example.com/downloads"},
+    {
+        "APP_ENV": "production",
+        "DEBUG": "true",
+        "LOG_LEVEL": "DEBUG",
+        "DGIDB_BASE_URL": "https://example.com/downloads",
+        "DGIDB_REQUIRED_DATASETS": '["dataset1.tsv","dataset2.tsv"]',
+    },
 )
 def test_system_environment_manifest_overrides() -> None:
     """
@@ -46,6 +53,7 @@ def test_system_environment_manifest_overrides() -> None:
     assert manifest.debug is True
     assert manifest.log_level == "DEBUG"
     assert manifest.dgidb_base_url == "https://example.com/downloads"
+    assert manifest.dgidb_required_datasets == ["dataset1.tsv", "dataset2.tsv"]
 
 
 @patch.dict(os.environ, {"DEBUG": "False"})
