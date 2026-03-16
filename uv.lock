@@ -135,9 +135,10 @@ dependencies = [
     { name = "beautifulsoup4" },
     { name = "dbt-core" },
     { name = "dbt-postgres" },
-    { name = "dlt" },
+    { name = "dlt", extra = ["postgres"] },
     { name = "loguru" },
     { name = "polars" },
+    { name = "psycopg2-binary" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "requests" },
@@ -169,9 +170,10 @@ requires-dist = [
     { name = "beautifulsoup4", specifier = ">=4.14.3" },
     { name = "dbt-core", specifier = ">=1.11.7" },
     { name = "dbt-postgres", specifier = ">=1.10.0" },
-    { name = "dlt", specifier = ">=1.23.0" },
+    { name = "dlt", extras = ["postgres"], specifier = ">=1.23.0" },
     { name = "loguru", specifier = ">=0.7.2" },
     { name = "polars", specifier = ">=1.39.0" },
+    { name = "psycopg2-binary", specifier = ">=2.9.11" },
     { name = "pydantic", specifier = ">=2.12.5" },
     { name = "pydantic-settings", specifier = ">=2.13.1" },
     { name = "requests", specifier = ">=2.32.5" },
@@ -478,6 +480,11 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a4/dc/b71d5ff2d5dfc8d5b15369079ed7af889277ea6367e23913848f59d72da9/dlt-1.23.0.tar.gz", hash = "sha256:e61b5cdc90fc80b1f080dd4cf4bb47f32f0bf8991f0a3926dc7a697bedc6530a", size = 960825, upload-time = "2026-03-06T14:08:00.538Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2c/47/ff900919bc7d3b0832e537b41ba3f56ccbb7c0bccfb30f0f321ff65c8aa6/dlt-1.23.0-py3-none-any.whl", hash = "sha256:99e072c1bf963f98af1f9b70ab68aa5ca2d12ef2200ff7d492b5f8eae1f6da20", size = 1212399, upload-time = "2026-03-06T14:07:58.085Z" },
+]
+
+[package.optional-dependencies]
+postgres = [
+    { name = "psycopg2-binary" },
 ]
 
 [[package]]
