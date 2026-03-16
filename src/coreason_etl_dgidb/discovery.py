@@ -41,15 +41,18 @@ def discover_dgidb_datasets(base_url: str, required_datasets: list[str]) -> dict
     for a_tag in soup.find_all("a", href=True):
         href = a_tag["href"]
 
+        # BeautifulSoup can return a list for some attributes, handle it safely
+        href_str = href[0] if isinstance(href, list) else str(href)
+
         # Check if the href matches any of the required datasets
         for dataset in required_datasets:
             # We look for links that end with the dataset name (e.g. .*interactions\.tsv$)
             # Using regex for exact matching at the end of the URL path
             pattern = re.compile(rf".*{re.escape(dataset)}$")
             # We only take the first matching link for each dataset
-            if pattern.search(href) and dataset not in discovered_urls:
+            if pattern.search(href_str) and dataset not in discovered_urls:
                 # Make sure to handle relative URLs by joining with base_url
-                discovered_urls[dataset] = urljoin(base_url, href)
+                discovered_urls[dataset] = urljoin(base_url, href_str)
                 logger.debug(f"Discovered {dataset} at {discovered_urls[dataset]}")
 
     # Verify that all required datasets were found

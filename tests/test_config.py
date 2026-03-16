@@ -86,3 +86,30 @@ def test_system_environment_manifest_postgres_overrides() -> None:
     assert manifest.pguser == "test_user"
     assert manifest.pgpassword == "test_password"
     assert manifest.pgdatabase == "test_db"
+
+
+@patch.dict(os.environ, {}, clear=True)
+def test_system_environment_manifest_postgres_dsn_default() -> None:
+    """
+    AGENT INSTRUCTION: Ensure the default computed postgres_dsn is correct.
+    """
+    manifest = SystemEnvironmentManifest()
+    assert manifest.postgres_dsn == "postgresql://postgres:postgres@localhost:5432/postgres"
+
+
+@patch.dict(
+    os.environ,
+    {
+        "PGHOST": "db.example.com",
+        "PGPORT": "5432",
+        "PGUSER": "admin",
+        "PGPASSWORD": "secretpassword",
+        "PGDATABASE": "prod_db",
+    },
+)
+def test_system_environment_manifest_postgres_dsn_override() -> None:
+    """
+    AGENT INSTRUCTION: Ensure the computed postgres_dsn updates correctly with env overrides.
+    """
+    manifest = SystemEnvironmentManifest()
+    assert manifest.postgres_dsn == "postgresql://admin:secretpassword@db.example.com:5432/prod_db"
