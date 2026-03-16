@@ -22,11 +22,6 @@ from coreason_etl_dgidb.utils.logger import logger
 NAMESPACE_DGIDB = uuid.UUID("f47ac10b-58cc-4372-a567-0e02b2c3d479")
 
 
-def hello_world() -> str:
-    logger.info("Hello World!")
-    return "Hello World!"
-
-
 def process_dgidb_tsv(url: str, file_type: str) -> Iterator[dict[str, Any]]:
     """
     AGENT INSTRUCTION: This capability fetches, processes, and yields
