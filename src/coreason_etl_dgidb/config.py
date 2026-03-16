@@ -45,6 +45,14 @@ class SystemEnvironmentManifest(BaseSettings):
     pgpassword: str = Field(default="postgres", description="PostgreSQL database password.")
     pgdatabase: str = Field(default="postgres", description="PostgreSQL database name.")
 
+    @property
+    def postgres_dsn(self) -> str:
+        """
+        AGENT INSTRUCTION: Constructs the PostgreSQL connection string DSN
+        based on the validated configuration attributes.
+        """
+        return f"postgresql://{self.pguser}:{self.pgpassword}@{self.pghost}:{self.pgport}/{self.pgdatabase}"
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
 
