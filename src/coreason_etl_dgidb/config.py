@@ -28,6 +28,9 @@ class SystemEnvironmentManifest(BaseSettings):
         default="development", description="The operational environment (e.g., development, testing, production)."
     )
     debug: bool = Field(default=False, description="Flag to enable or disable debug mode.")
+    secret_key: str = Field(
+        default="insecure_default_secret_key", description="Secret key for cryptographic signing/sessions."
+    )
     log_level: str = Field(
         default="INFO", description="The minimum logging level to record (e.g., DEBUG, INFO, WARNING, ERROR)."
     )
