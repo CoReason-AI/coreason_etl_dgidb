@@ -13,11 +13,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 import requests
 
-from coreason_etl_dgidb.main import hello_world, process_dgidb_tsv
-
-
-def test_hello_world() -> None:
-    assert hello_world() == "Hello World!"
+from coreason_etl_dgidb.main import process_dgidb_tsv
 
 
 @patch("requests.get")
