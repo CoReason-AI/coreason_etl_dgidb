@@ -24,9 +24,10 @@ def test_get_dlt_pipeline(mock_pipeline: MagicMock) -> None:
     get_dlt_pipeline()
 
     # Assert
-    mock_pipeline.assert_called_once_with(
-        pipeline_name="dgidb_pipeline",
-        destination="postgres",
-        dataset_name="bronze",
-        credentials=config_manifest.postgres_dsn,
-    )
+    mock_pipeline.assert_called_once()
+    kwargs = mock_pipeline.call_args.kwargs
+    assert kwargs["pipeline_name"] == "dgidb_pipeline"
+    assert kwargs["dataset_name"] == "bronze"
+    # Destination is now a Destination object
+    assert kwargs["destination"].destination_type in ("postgres", "dlt.destinations.postgres")
+    assert kwargs["destination"].config_params["credentials"] == config_manifest.postgres_dsn

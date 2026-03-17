@@ -24,7 +24,6 @@ def get_dlt_pipeline() -> Pipeline:
     """
     return dlt.pipeline(
         pipeline_name="dgidb_pipeline",
-        destination="postgres",
+        destination=dlt.destinations.postgres(credentials=config_manifest.postgres_dsn),
         dataset_name="bronze",
-        credentials=config_manifest.postgres_dsn,
     )
