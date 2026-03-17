@@ -11,6 +11,9 @@
 import os
 from unittest.mock import patch
 
+from hypothesis import given, settings
+from hypothesis import strategies as st
+
 from coreason_etl_dgidb.config import SystemEnvironmentManifest
 
 
@@ -30,6 +33,7 @@ def test_system_environment_manifest_defaults() -> None:
     assert manifest.pgport == 5432
     assert manifest.pguser == "postgres"
     assert manifest.pgpassword == "postgres"
+    assert manifest.secret_key == "insecure_default_secret_key"  # noqa: S105
     assert manifest.pgdatabase == "postgres"
 
 
@@ -39,6 +43,7 @@ def test_system_environment_manifest_defaults() -> None:
         "APP_ENV": "production",
         "DEBUG": "true",
         "LOG_LEVEL": "DEBUG",
+        "SECRET_KEY": "super_secret_override",
         "DGIDB_BASE_URL": "https://example.com/downloads",
         "DGIDB_REQUIRED_DATASETS": '["dataset1.tsv","dataset2.tsv"]',
     },
@@ -51,6 +56,7 @@ def test_system_environment_manifest_overrides() -> None:
     manifest = SystemEnvironmentManifest()
     assert manifest.app_env == "production"
     assert manifest.debug is True
+    assert manifest.secret_key == "super_secret_override"  # noqa: S105
     assert manifest.log_level == "DEBUG"
     assert manifest.dgidb_base_url == "https://example.com/downloads"
     assert manifest.dgidb_required_datasets == ["dataset1.tsv", "dataset2.tsv"]
@@ -113,3 +119,57 @@ def test_system_environment_manifest_postgres_dsn_override() -> None:
     """
     manifest = SystemEnvironmentManifest()
     assert manifest.postgres_dsn == "postgresql://admin:secretpassword@db.example.com:5432/prod_db"
+
+
+@settings(max_examples=10)  # type: ignore
+@given(  # type: ignore
+    st.text(min_size=1).filter(lambda s: "\x00" not in s),
+    st.booleans(),
+    st.text(min_size=1).filter(lambda s: "\x00" not in s),
+    st.text(min_size=1).filter(lambda s: "\x00" not in s),
+    st.text(min_size=1).filter(lambda s: "\x00" not in s),
+    st.integers(min_value=1, max_value=65535),
+    st.text(min_size=1).filter(lambda s: "\x00" not in s),
+    st.text(min_size=1).filter(lambda s: "\x00" not in s),
+    st.text(min_size=1).filter(lambda s: "\x00" not in s),
+)
+def test_system_environment_manifest_hypothesis(
+    app_env: str,
+    debug: bool,
+    secret_key: str,
+    log_level: str,
+    pghost: str,
+    pgport: int,
+    pguser: str,
+    pgpassword: str,
+    pgdatabase: str,
+) -> None:
+    """
+    AGENT INSTRUCTION: Property-based testing for SystemEnvironmentManifest
+    using hypothesis to test edge cases, as mandated in AGENTS.md.
+    """
+    with patch.dict(
+        os.environ,
+        {
+            "APP_ENV": app_env,
+            "DEBUG": str(debug),
+            "SECRET_KEY": secret_key,
+            "LOG_LEVEL": log_level,
+            "PGHOST": pghost,
+            "PGPORT": str(pgport),
+            "PGUSER": pguser,
+            "PGPASSWORD": pgpassword,
+            "PGDATABASE": pgdatabase,
+        },
+        clear=True,
+    ):
+        manifest = SystemEnvironmentManifest()
+        assert manifest.app_env == app_env
+        assert manifest.debug is debug
+        assert manifest.secret_key == secret_key
+        assert manifest.log_level == log_level
+        assert manifest.pghost == pghost
+        assert manifest.pgport == pgport
+        assert manifest.pguser == pguser
+        assert manifest.pgpassword == pgpassword
+        assert manifest.pgdatabase == pgdatabase
