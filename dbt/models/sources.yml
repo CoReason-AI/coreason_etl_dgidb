@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: "Raw DGIdb datasets ingested by dlt into Postgres."
+    tables:
+      - name: dgidb_interactions_raw
+        description: "Raw drug-gene interactions TSV records."
+      - name: dgidb_genes_raw
+        description: "Raw gene metadata TSV records."
+      - name: dgidb_drugs_raw
+        description: "Raw drug metadata TSV records."
+      - name: dgidb_categories_raw
+        description: "Raw categories TSV records."
