@@ -18,8 +18,8 @@ def test_dbt_schema_exists_and_valid() -> None:
     AGENT INSTRUCTION: Programmatically verify that the required
     dbt schema.yml exists and contains the strict data tests.
     """
-    schema_path = Path("dbt/models/schema.yml")
-    assert schema_path.exists(), "dbt/models/schema.yml does not exist."
+    schema_path = Path("dbt/models/silver/schema.yml")
+    assert schema_path.exists(), "dbt/models/silver/schema.yml does not exist."
 
     with open(schema_path) as f:
         schema = yaml.safe_load(f)
