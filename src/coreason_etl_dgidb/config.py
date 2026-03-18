@@ -13,7 +13,8 @@ import uuid
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-NAMESPACE_DGIDB = uuid.UUID("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+DGIDB_BASE_URL: str = "https://www.dgidb.org/downloads"
+NAMESPACE_DGIDB: uuid.UUID = uuid.UUID("f47ac10b-58cc-4372-a567-0e02b2c3d479")
 
 
 class SystemEnvironmentManifest(BaseSettings):
@@ -35,7 +36,7 @@ class SystemEnvironmentManifest(BaseSettings):
         default="INFO", description="The minimum logging level to record (e.g., DEBUG, INFO, WARNING, ERROR)."
     )
     dgidb_base_url: str = Field(
-        default="https://www.dgidb.org/downloads",
+        default=DGIDB_BASE_URL,
         description="The base URL from which DGIdb bulk files will be discovered and downloaded.",
     )
     dgidb_required_datasets: list[str] = Field(

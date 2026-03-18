@@ -9,12 +9,26 @@
 # Source Code: https://github.com/CoReason-AI/coreason_etl_dgidb
 
 import os
+import uuid
 from unittest.mock import patch
 
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from coreason_etl_dgidb.config import SystemEnvironmentManifest
+from coreason_etl_dgidb.config import (
+    DGIDB_BASE_URL,
+    NAMESPACE_DGIDB,
+    SystemEnvironmentManifest,
+)
+
+
+def test_dgidb_constants_correctness() -> None:
+    """
+    AGENT INSTRUCTION: Ensure module-level constants for DGIdb extraction
+    are exactly correct as required by the specification.
+    """
+    assert DGIDB_BASE_URL == "https://www.dgidb.org/downloads"
+    assert uuid.UUID("f47ac10b-58cc-4372-a567-0e02b2c3d479") == NAMESPACE_DGIDB
 
 
 @patch.dict(os.environ, {}, clear=True)
