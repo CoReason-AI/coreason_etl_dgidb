@@ -6,13 +6,13 @@ models:
     columns:
       - name: drug_name
         description: "Standardized drug identifier"
-        data_tests:
+        tests:
           - not_null:
               config:
                 severity: warn
       - name: gene_symbol
         description: "HUGO/Ensembl gene symbol"
-        data_tests:
+        tests:
           - not_null:
               config:
                 severity: warn
