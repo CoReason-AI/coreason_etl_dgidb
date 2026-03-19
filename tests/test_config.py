@@ -135,8 +135,8 @@ def test_system_environment_manifest_postgres_dsn_override() -> None:
     assert manifest.postgres_dsn == "postgresql://admin:secretpassword@db.example.com:5432/prod_db"
 
 
-@settings(max_examples=10)  # type: ignore
-@given(  # type: ignore
+@settings(max_examples=10)  # type: ignore[misc]
+@given(  # type: ignore[misc]
     st.text(min_size=1).filter(lambda s: "\x00" not in s),
     st.booleans(),
     st.text(min_size=1).filter(lambda s: "\x00" not in s),

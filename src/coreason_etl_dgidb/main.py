@@ -8,7 +8,6 @@
 #
 # Source Code: https://github.com/CoReason-AI/coreason_etl_dgidb
 
-import os
 import tempfile
 import uuid
 from collections.abc import Iterator
@@ -31,6 +30,8 @@ def process_dgidb_tsv(url: str, file_type: str) -> Iterator[dict[str, Any]]:
     """
     # file_type is deliberately included in the signature for logging or future branching
     logger.debug(f"Processing DGIdb TSV dataset: {file_type} from {url}")
+
+    from pathlib import Path
 
     tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".tsv")  # noqa: SIM115
     try:
@@ -69,4 +70,4 @@ def process_dgidb_tsv(url: str, file_type: str) -> Iterator[dict[str, Any]]:
             }
 
     finally:
-        os.unlink(tmp_file.name)  # Cross-platform cleanup
+        Path(tmp_file.name).unlink(missing_ok=True)
