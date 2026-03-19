@@ -32,9 +32,11 @@ def dgidb_source() -> Iterator[Any]:
         required_datasets=config_manifest.dgidb_required_datasets,
     )
 
+    from pathlib import Path
+
     for dataset_name, url in discovered_urls.items():
         # Derive the table name from the dataset file name, e.g., interactions.tsv -> dgidb_interactions_raw
-        table_suffix = dataset_name.replace(".tsv", "")
+        table_suffix = Path(dataset_name).stem
         table_name = f"dgidb_{table_suffix}_raw"
 
         @dlt.resource(name=table_name, write_disposition="replace")  # type: ignore[misc]
