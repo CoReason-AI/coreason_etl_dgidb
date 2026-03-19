@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: silver_dgidb_interactions
+  - name: coreason_etl_dgidb_silver_interactions
     description: "Silver table for DGIdb interactions extracted from raw JSONB"
     columns:
       - name: drug_name
