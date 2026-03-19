@@ -35,9 +35,10 @@ def dgidb_source() -> Iterator[Any]:
     from pathlib import Path
 
     for dataset_name, url in discovered_urls.items():
-        # Derive the table name from the dataset file name, e.g., interactions.tsv -> dgidb_interactions_raw
+        # Derive the table name from the dataset file name,
+        # e.g., interactions.tsv -> coreason_etl_dgidb_bronze_interactions
         table_suffix = Path(dataset_name).stem
-        table_name = f"dgidb_{table_suffix}_raw"
+        table_name = f"coreason_etl_dgidb_bronze_{table_suffix}"
 
         @dlt.resource(name=table_name, write_disposition="replace")  # type: ignore[misc]
         def dataset_resource(dataset_url: str = url, type_name: str = table_suffix) -> Iterator[dict[str, Any]]:

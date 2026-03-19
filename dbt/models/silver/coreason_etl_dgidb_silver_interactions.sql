@@ -10,7 +10,7 @@
 
 WITH source AS (
     SELECT *
-    FROM {{ source('bronze', 'dgidb_interactions_raw') }}
+    FROM {{ source('bronze', 'coreason_etl_dgidb_bronze_interactions') }}
 ),
 
 extracted AS (

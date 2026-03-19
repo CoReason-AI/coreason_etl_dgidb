@@ -10,7 +10,7 @@
 
 WITH edges AS (
     SELECT *
-    FROM {{ ref('gold_dgi_target_edges') }}
+    FROM {{ ref('coreason_etl_dgidb_gold_target_edges') }}
 ),
 
 -- Aggregate sources and calculate confidence based on corroborated sources and scores

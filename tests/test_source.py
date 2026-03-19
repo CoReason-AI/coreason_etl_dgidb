@@ -41,8 +41,8 @@ def test_dgidb_source(mock_discover: MagicMock, mock_process: MagicMock) -> None
     res_interactions = resources[0]
     res_genes = resources[1]
 
-    assert res_interactions.name == "dgidb_interactions_raw"
-    assert res_genes.name == "dgidb_genes_raw"
+    assert res_interactions.name == "coreason_etl_dgidb_bronze_interactions"
+    assert res_genes.name == "coreason_etl_dgidb_bronze_genes"
 
     # Execution check for the resource inner generator
     # resources are generators when called

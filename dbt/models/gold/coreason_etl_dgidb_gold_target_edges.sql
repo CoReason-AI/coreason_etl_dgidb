@@ -10,7 +10,7 @@
 
 WITH interactions AS (
     SELECT *
-    FROM {{ ref('silver_dgidb_interactions') }}
+    FROM {{ ref('coreason_etl_dgidb_silver_interactions') }}
 ),
 
 edges AS (
