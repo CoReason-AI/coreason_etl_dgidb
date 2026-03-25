@@ -4,11 +4,11 @@ sources:
   - name: bronze
     description: "Raw DGIdb datasets ingested by dlt into Postgres."
     tables:
-      - name: dgidb_interactions_raw
+      - name: coreason_etl_dgidb_bronze_interactions
         description: "Raw drug-gene interactions TSV records."
-      - name: dgidb_genes_raw
+      - name: coreason_etl_dgidb_bronze_genes
         description: "Raw gene metadata TSV records."
-      - name: dgidb_drugs_raw
+      - name: coreason_etl_dgidb_bronze_drugs
         description: "Raw drug metadata TSV records."
-      - name: dgidb_categories_raw
+      - name: coreason_etl_dgidb_bronze_categories
         description: "Raw categories TSV records."

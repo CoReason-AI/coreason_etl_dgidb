@@ -27,8 +27,9 @@ def test_dbt_schema_exists_and_valid() -> None:
     assert "models" in schema, "schema.yml missing 'models' key."
 
     # Find the target model
-    interactions_model = next((m for m in schema["models"] if m.get("name") == "silver_dgidb_interactions"), None)
-    assert interactions_model is not None, "Model 'silver_dgidb_interactions' not found in schema.yml."
+    target_name = "coreason_etl_dgidb_silver_interactions"
+    interactions_model = next((m for m in schema["models"] if m.get("name") == target_name), None)
+    assert interactions_model is not None, f"Model '{target_name}' not found in schema.yml."
 
     columns = {col["name"]: col for col in interactions_model.get("columns", [])}
 

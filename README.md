@@ -40,3 +40,54 @@ ETL pipeline for extracting and processing DGIdb drug-gene interaction data.
     ```sh
     uv run pytest
     ```
+
+## End-to-End Local Testing (PostgreSQL)
+
+You can run the entire ETL pipeline locally on your machine without Docker. The pipeline relies entirely on the local `uv` virtual environment and an existing PostgreSQL instance.
+
+### Data Source & Size
+- **Source Link:** Data is dynamically discovered and scraped from [https://www.dgidb.org/downloads](https://www.dgidb.org/downloads).
+- **Size:** The downloaded TSVs (interactions, genes, drugs, categories) total approximately **10-15 MB** locally compressed, and will expand into structured JSONB rows and standardized Medallion tables in Postgres.
+
+### 1. Database Setup
+Create a target database in your local PostgreSQL instance:
+```sh
+createdb dgidb_test
+```
+
+### 2. Configure Environment
+Set the required environment variables to point `dlt` and `dbt` to your database. You can export these in your shell or use a `.env` file at the root of the project:
+```sh
+export PGHOST=localhost
+export PGPORT=5432
+export PGUSER=postgres      # Replace with your postgres username
+export PGPASSWORD=postgres  # Replace with your postgres password
+export PGDATABASE=dgidb_test
+```
+
+### 3. Run Bronze Layer Ingestion (`dlt`)
+Use the included `run_pipeline.py` entry point to execute the Python `dlt` ingestion. This scrapes the URLs, downloads the data to a memory-safe temporary file, generates UUIDv5s using `polars`, and loads the JSONB rows into your `bronze` schema.
+```sh
+uv run python run_pipeline.py
+```
+
+### 4. Run Silver & Gold Transformations (`dbt`)
+Once the Bronze layer is populated, use `dbt` to perform data cleaning (Silver) and graph edge generation (Gold) fully in-database.
+```sh
+cd dbt
+uv run dbt deps
+uv run dbt build
+```
+
+### 5. Verify the Results
+You can query the final analytical tables directly via `psql` or any SQL client:
+```sh
+psql -d dgidb_test
+```
+```sql
+-- Check the structured Gold graph edges
+SELECT * FROM gold.coreason_etl_dgidb_gold_target_edges LIMIT 10;
+
+-- Check the high-confidence RAG index
+SELECT * FROM gold.coreason_etl_dgidb_gold_high_confidence_index LIMIT 10;
+```

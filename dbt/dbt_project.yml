@@ -18,3 +18,7 @@ clean-targets:
 models:
   coreason_etl_dgidb:
     +materialized: table
+    silver:
+      +schema: silver
+    gold:
+      +schema: gold
