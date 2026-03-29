@@ -10,6 +10,7 @@
 
 import os
 from pathlib import Path
+from unittest.mock import patch
 
 
 def test_logger_directory_creation() -> None:
@@ -46,3 +47,23 @@ def test_logger_directory_does_not_exist(tmp_path: Path) -> None:
         assert Path("logs").exists()
     finally:
         os.chdir(old_cwd)
+
+
+@patch.dict(os.environ, {"LOG_LEVEL": "DEBUG"}, clear=True)
+def test_logger_config_manifest_level() -> None:
+    """
+    AGENT INSTRUCTION: Ensure that logger correctly reads from config_manifest
+    and sets log_level to what is provided by the environment.
+    We mock the environment and then reload the logger module.
+    """
+    import sys
+
+    # Unload to force reload from config
+    if "coreason_etl_dgidb.utils.logger" in sys.modules:
+        del sys.modules["coreason_etl_dgidb.utils.logger"]
+    if "coreason_etl_dgidb.config" in sys.modules:
+        del sys.modules["coreason_etl_dgidb.config"]
+
+    import coreason_etl_dgidb.utils.logger as custom_logger
+
+    assert custom_logger.config_manifest.log_level == "DEBUG"
