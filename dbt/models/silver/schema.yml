@@ -4,14 +4,16 @@ models:
   - name: coreason_etl_dgidb_silver_interactions
     description: "Silver table for DGIdb interactions extracted from raw JSONB"
     columns:
+      - name: coreason_id
+        description: "Primary key"
       - name: drug_name
         description: "Standardized drug identifier"
         tests:
           - not_null:
               config:
                 severity: warn
-      - name: gene_symbol
-        description: "HUGO/Ensembl gene symbol"
+      - name: gene_name  # Updated from gene_symbol to match the SQL
+        description: "HUGO/Ensembl gene symbol or name"
         tests:
           - not_null:
               config:
@@ -22,3 +24,15 @@ models:
         description: "e.g., DrugBank, ChEMBL"
       - name: evidence_score
         description: "Confidence/Assertion score"
+        
+      # --- New clinical fields added below ---
+      - name: drug_concept_id
+        description: "Standardized ontology identifier for the drug (e.g., RxNorm CUI)"
+      - name: gene_concept_id
+        description: "Standardized ontology identifier for the gene"
+      - name: is_approved
+        description: "Boolean indicating if the drug is FDA/regulatory approved"
+      - name: is_immunotherapy
+        description: "Boolean indicating if the drug acts as an immunotherapy"
+      - name: is_anti_neoplastic
+        description: "Boolean indicating if the drug is an anti-cancer (antineoplastic) agent"

@@ -10,14 +10,20 @@ edges AS (
     SELECT
         coreason_id AS edge_id,
         drug_name,
-        gene_symbol,
+        drug_concept_id,
+        gene_name,
+        gene_concept_id,
         COALESCE(interaction_types, 'unknown') AS relationship_type,
         source_database,
-        evidence_score
+        evidence_score,
+        is_approved,
+        is_immunotherapy,
+        is_anti_neoplastic
     FROM interactions
     WHERE
-        drug_name IS NOT NULL
-        AND gene_symbol IS NOT NULL
+        -- Ensure at least one identifier exists for both nodes
+        (drug_name IS NOT NULL OR drug_concept_id IS NOT NULL)
+        AND (gene_name IS NOT NULL OR gene_concept_id IS NOT NULL)
 )
 
 SELECT *
